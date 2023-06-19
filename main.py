@@ -4,9 +4,10 @@ from math import floor
 class UserCal:
 
     def __init__(self):
+        self.user_name = input("Ваше имя: ").capitalize()
         self.gender = self.__get_gender(input("Ваш пол (м/ж): ").lower())
         self.age = int(input("Ваш возраст: "))
-        self.weight = int(input("Ваш вес: "))
+        self.weight = float(input("Ваш вес: "))
         self.height = int(input("Ваш рост: "))
         self.activ = self.__get_activity(int(input(
             "1 - Незначительная физическая нагрузка\n"
@@ -36,6 +37,8 @@ class UserCal:
             "\t- Профессиональные спортсмены в период активных тренировок и соревнований.\n"
             "\nВЫБЕРИТЕ ТОТ НОМЕР КОТОРЫЙ ПОДХОДИТ ВАМ: "
         )))
+        self.caloric = self.daily_calorie()
+        self.total_caloric = floor(self.activ * self.caloric)
 
     @classmethod
     def __get_activity(cls, x):
@@ -74,6 +77,8 @@ class UserCal:
             return False
 
 
-alexey = UserCal()
-print(alexey.__dict__)
-print(alexey.daily_calorie())
+user_1 = UserCal()
+user_2 = UserCal()
+
+print(f"\n{user_1.user_name}: максимальная соточная калорийность - {user_1.total_caloric} ккал")
+print(f"\n{user_2.user_name}: максимальная соточная калорийность - {user_2.total_caloric} ккал")
