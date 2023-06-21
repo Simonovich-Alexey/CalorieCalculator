@@ -39,6 +39,7 @@ class UserCal:
         )))
         self.caloric = self.daily_calorie()
         self.total_caloric = floor(self.activ * self.caloric)
+        self.ratio_min = floor(self.weight / (0.45 * 8))
 
     @classmethod
     def __get_activity(cls, x):
@@ -76,9 +77,30 @@ class UserCal:
         else:
             return False
 
+    def reduction_weight(self, percent):
+        clr_reduction = self.total_caloric * (1 - percent / 100)
+        if clr_reduction < self.ratio_min:
+            return floor(self.ratio_min)
+        else:
+            return floor(clr_reduction)
+
+    def gain_weight(self, percent):
+        return self.total_caloric * (1 + percent / 100)
+
+    def data_output(self, user):
+        if calorie_goal == "=":
+            print(
+                f"\n{self.user_name}: максимальная соточная калорийность для сохранения веса - {self.total_caloric} ккал")
+        elif calorie_goal == "-":
+            print(
+                f"{self.user_name}: для достижения своей цели необходимо употреблять не более {self.reduction_weight(20)},"
+                f"но и не менее {self.ratio_min} ккал")
+        elif calorie_goal == "+":
+            print(
+                f"{self.user_name}: для достижения своей цели необходимо употреблять не менее {self.gain_weight(20)} ккал")
+
 
 user_1 = UserCal()
-user_2 = UserCal()
 
-print(f"\n{user_1.user_name}: максимальная соточная калорийность - {user_1.total_caloric} ккал")
-print(f"\n{user_2.user_name}: максимальная соточная калорийность - {user_2.total_caloric} ккал")
+calorie_goal = input("= сохранить вес\n+ набрать вес\n- уменьшить вес\nВВЕДИТЕ ВАШУ ЦЕЛЬ: ")
+
